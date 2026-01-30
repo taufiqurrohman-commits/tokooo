@@ -1,6 +1,7 @@
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbwa9Eyc8gf4StOVX3ONngd33jE7bX7tIOysUwlO145ciG46gHyr0b0VBSnJj52nDFCf/exec";
 
+let produkList = [];
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 function simpanCart() {
@@ -8,8 +9,8 @@ function simpanCart() {
 }
 
 function tambahProduk(id) {
-  const produk = window.dataProduk.find(p => p.id == id);
-  cart.push(produk);
+  const p = produkList.find(item => item.id == id);
+  cart.push(p);
   simpanCart();
   renderCart();
 }
@@ -21,7 +22,7 @@ function renderCart() {
   if (cart.length === 0) {
     html += "<p>Keranjang kosong</p>";
   } else {
-    cart.forEach((p, i) => {
+    cart.forEach(p => {
       total += Number(p.harga);
       html += `<p>${p.nama} - Rp ${p.harga}</p>`;
     });
@@ -34,7 +35,7 @@ function renderCart() {
 fetch(API_URL)
   .then(res => res.json())
   .then(data => {
-    window.dataProduk = data;
+    produkList = data;
 
     let html = "";
     data.forEach(p => {
@@ -51,5 +52,9 @@ fetch(API_URL)
 
     document.getElementById("produk").innerHTML = html;
     renderCart();
+  })
+  .catch(() => {
+    document.getElementById("produk").innerHTML =
+      "❌ Gagal load produk";
   });
 </script>
