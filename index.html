@@ -1,0 +1,19 @@
+<script>
+fetch("https://script.google.com/macros/s/AKfycbwa9Eyc8gf4StOVX3ONngd33jE7bX7tIOysUwlO145ciG46gHyr0b0VBSnJj52nDFCf/exec")
+  .then(res => res.json())
+  .then(produk => {
+    let html = "";
+    produk.forEach(p => {
+      html += `
+        <div class="card">
+          <h4>${p.nama}</h4>
+          <p>Rp ${p.harga}</p>
+          <button onclick="alert('${p.nama} ditambahkan')">
+            Tambah ke Keranjang
+          </button>
+        </div>
+      `;
+    });
+    document.getElementById("produk").innerHTML = html;
+  });
+</script>
